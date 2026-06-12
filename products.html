@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derna Elite - إدارة المنتجات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray">
+    <div class="d-flex">
+        <nav class="sidebar bg-dark">
+            <div class="sidebar-header bg-gold text-dark p-3 text-center">
+                <h4 class="fw-bold mb-0">Derna Elite</h4>
+            </div>
+            <ul class="nav flex-column p-2">
+                <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>لوحة التحكم</a></li>
+                <li class="nav-item"><a class="nav-link active" href="products.html"><i class="bi bi-box-seam me-2"></i>المنتجات</a></li>
+                <li class="nav-item"><a class="nav-link" href="sales.html"><i class="bi bi-cart-check me-2"></i>المبيعات</a></li>
+                <li class="nav-item"><a class="nav-link" href="purchases.html"><i class="bi bi-bag-check me-2"></i>المشتريات</a></li>
+                <li class="nav-item"><a class="nav-link" href="inventory.html"><i class="bi bi-clipboard-data me-2"></i>المخزون</a></li>
+                <li class="nav-item"><a class="nav-link" href="barcodes.html"><i class="bi bi-upc-scan me-2"></i>الباركود</a></li>
+                <li class="nav-item"><a class="nav-link" href="reports.html"><i class="bi bi-graph-up me-2"></i>التقارير</a></li>
+                <li class="nav-item"><a class="nav-link" href="users.html"><i class="bi bi-people me-2"></i>المستخدمين</a></li>
+                <li class="nav-item"><a class="nav-link text-danger" href="#" id="logoutBtn"><i class="bi bi-box-arrow-left me-2"></i>تسجيل الخروج</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-dark fw-bold">إدارة المنتجات</h2>
+                <div class="d-flex gap-3 align-items-center">
+                    <div class="text-muted" id="welcomeUser"></div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                            <i class="bi bi-tags me-2"></i>إدارة التصنيفات
+                        </button>
+                        <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#productModal">
+                            <i class="bi bi-plus-lg me-2"></i>إضافة منتج جديد
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-white shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="searchProduct" placeholder="بحث عن منتج...">
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select" id="filterCategory">
+                                <option value="">جميع التصنيفات</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-white shadow-sm">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-dark text-gold">
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>الكود</th>
+                                    <th>المنتج</th>
+                                    <th>التصنيف</th>
+                                    <th>الباركود</th>
+                                    <th>سعر الشراء</th>
+                                    <th>سعر البيع</th>
+                                    <th>الكمية</th>
+                                    <th>المورد</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-gold">
+                    <h5 class="modal-title text-gold" id="productModalTitle">إضافة منتج جديد</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">اسم المنتج</label>
+                                <input type="text" class="form-control bg-gray text-dark" id="productName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">الكود</label>
+                                <input type="text" class="form-control bg-gray text-dark" id="productCode" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">التصنيف</label>
+                                <select class="form-select bg-gray text-dark" id="productCategory" required></select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">المورد</label>
+                                <select class="form-select bg-gray text-dark" id="productSupplier" required></select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">سعر الشراء</label>
+                                <input type="number" step="0.01" class="form-control bg-gray text-dark" id="productCostPrice" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">سعر البيع</label>
+                                <input type="number" step="0.01" class="form-control bg-gray text-dark" id="productSellPrice" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">الكمية</label>
+                                <input type="number" class="form-control bg-gray text-dark" id="productQuantity" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">صورة المنتج</label>
+                                <input type="file" class="form-control bg-gray text-dark" id="productImage" accept="image/*">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-gold">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" form="productForm" class="btn btn-gold">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="categoryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-gold">
+                    <h5 class="modal-title text-gold">إدارة التصنيفات</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">إضافة تصنيف جديد</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" class="form-control bg-gray text-dark" id="newCategoryName" placeholder="اسم التصنيف">
+                            <button class="btn btn-gold" id="addCategoryBtn">إضافة</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>اسم التصنيف</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>
