@@ -121,10 +121,24 @@
     }
 }
 
+/* Allow toggle on all screen sizes */
+.sidebar {
+    transition: transform 0.3s;
+}
+.sidebar.hidden {
+    transform: translateX(100%);
+}
+.main-content {
+    transition: margin-right 0.3s;
+}
+.main-content.expanded {
+    margin-right: 0;
+    padding-top: 70px; /* To avoid overlapping with toggle button */
+}
+
 @media (max-width: 991.98px) {
     .sidebar {
         transform: translateX(100%);
-        transition: transform 0.3s;
     }
     .sidebar.show {
         transform: translateX(0);
